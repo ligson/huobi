@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        var ws = new WebSocket("wss://www.hbg.com/-/s/pro/ws");
+        ws.onmessage = function (msg) {
+            console.log("rec:" + msg);
+            var blob = msg.data;
+            var reader = new FileReader();
+            reader.addEventListener("loadend", function (e) {
+                // reader.result 包含转化为类型数组的blob
+                console.log(e.target.result)
+            });
+            reader.readAsText(blob, "UTF-8");
+        };
+        ws.onclose = function (p1) {
+            console.log("close:" + p1);
+        };
+        ws.onerror = function (event) {
+            console.log("error:" + event);
+        };
+        ws.onopen = function (event) {
+            console.log("open:" + event);
+        };
+    </script>
+</head>
+<body>
+</body>
+</html>

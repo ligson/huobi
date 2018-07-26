@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+
+    <logger name="com.xb" level="debug"/>
+    <logger name="org.ligson" level="debug"/>
+    <logger name="jdbc.sqlonly" level="debug"/>
+    <logger name="org.springframework.security" level="debug"/>
+    <!-- 打印 db相关日志，包括sql -->
+    <logger name="com.ibatis" level="DEBUG"/>
+    <logger name="com.ibatis.common.jdbc.SimpleDataSource" level="DEBUG"/>
+    <logger name="com.ibatis.common.jdbc.ScriptRunner" level="DEBUG"/>
+    <logger name="com.ibatis.sqlmap.engine.impl.SqlMapClientDelegate" level="DEBUG"/>
+    <logger name="java.sql.Connection" level="DEBUG"/>
+    <logger name="java.sql.Statement" level="DEBUG"/>
+    <logger name="java.sql.PreparedStatement" level="DEBUG"/>
+    <logger name="java.sql.ResultSet" level="DEBUG"/>
+    <logger name="druid.sql.Statement" level="DEBUG"/>
+    <logger name="com.alipay" level="DEBUG"/>
+    <!--<logger name="org.springframework" level="ERROR"/>-->
+
+    <appender name="FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>\${user.home}/huobi/logFile.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>3000</maxHistory>
+            <maxFileSize>100MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%-5level %d{MM-dd HH:mm:ss.SSS} [%thread] %logger{36} -%msg%n</pattern>
+            <charset>UTF-8</charset>
+            <immediateFlush>true</immediateFlush>
+        </encoder>
+    </appender>
+
+    <!-- 只用保存输出error级别的日志 -->
+    <appender name="FILE.ERROR"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>\${user.home}/huobi/logFile.%d{yyyy-MM-dd}.error.%i.log.gz
+            </fileNamePattern>
+            <!-- keep 30 days' worth of history -->
+            <maxHistory>3000</maxHistory>
+            <maxFileSize>100MB</maxFileSize>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%-5level %d{MM-dd HH:mm:ss.SSS} [%thread] %logger{36} -%msg%n</pattern>
+            <charset>UTF-8</charset>
+            <immediateFlush>true</immediateFlush>
+        </encoder>
+        <!-- 下面为配置只输出error级别的日志 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{yyyy-MM-dd HH:mm:ss} %highlight(%-5level) %boldYellow(%thread{10}) %boldGreen(%c:%L) >>>%msg%n
+            </Pattern>
+            <!--<Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %thread{10} %c:%L >>> %msg%n</Pattern>-->
+        </layout>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+        <appender-ref ref="FILE.ERROR"/>
+    </root>
+</configuration>
