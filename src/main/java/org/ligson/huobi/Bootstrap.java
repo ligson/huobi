@@ -12,7 +12,13 @@ public class Bootstrap extends ApplicationFrame {
     public static DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
     public static void main(String[] args) throws Exception {
-        HuoBiClient huoBiClient = new HuoBiClient("wss://www.hbg.com/-/s/pro/ws");
+//        wss://api.huobi.pro/ws
+
+  //      wss://api-aws.huobi.pro/ws
+
+        //wss://www.hbg.com/-/s/pro/ws
+
+        HuoBiClient huoBiClient = new HuoBiClient("wss://api.huobi.pro/ws/v1");
         huoBiClient.init();
         huoBiClient.start();
         //, "btcusdt"
